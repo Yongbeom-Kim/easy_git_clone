@@ -23,7 +23,7 @@ echo "Current dir: $(pwd)"
 
 echo "Cloning ${GITHUB_LINK}"
 
-GITHUB_SSH=git@${GITHUB_LINK}.gitb
+GITHUB_SSH=git@${GITHUB_LINK}.git
 GITHUB_SSH=${GITHUB_SSH/\//:}
 
 echo "Cloning by: $GITHUB_SSH"
