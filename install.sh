@@ -1,24 +1,18 @@
 #!/bin/bash
+CONFIG_HOME=${XDG_CONFIG_HOME:-"$HOME/.config"}/easy_git
+export BIN_DIR=$CONFIG_HOME/bin
 
-BASE_DIR=$(realpath ~/Dev)
-BIN_DIR=$BASE_DIR/bin
-
+rm -rf $BIN_DIR
 mkdir -p $BIN_DIR
 
 # Scripts dir
-SCRIPTS_DIR=$BASE_DIR/scripts
-ln -s $SCRIPTS_DIR/* $BIN_DIR
+SCRIPTS_DIR=$(realpath $(dirname $0))
+
+
+find $SCRIPTS_DIR -maxdepth 1 -not -name '*.sh' -not -type d | xargs -I {} bash -c 'ln -s {} $BIN_DIR/$(basename {})'
 
 # Add BIN_DIR to PATH
-if [ -f ~/.profile ]; then 
-    echo "export PATH=$BIN_DIR:\$PATH" >> ~/.profile
-else
-    echo "export PATH=$BIN_DIR:\$PATH" >> ~/.bashrc
-    if [ -f ~/.zshrc ]; then
-        echo "export PATH=$BIN_DIR:\$PATH" >> ~/.zshrc
-    fi
-fi
-
+./scripts/write_to_profile.sh "export PATH=$BIN_DIR:\$PATH"
 export PATH=$BIN_DIR:$PATH
 
 
