@@ -1,0 +1,33 @@
+#!/bin/bash
+
+GITHUB_LINK=$1
+if [ -z "$GITHUB_LINK" ]; then
+    echo "Please provide a github link"
+    exit 1
+fi
+GITHUB_LINK=${GITHUB_LINK##'https://'}
+GITHUB_LINK=${GITHUB_LINK##'http://'}
+
+BASE_DIR=$(realpath ~/Dev)
+
+echo "Base dir: $BASE_DIR"
+
+cd $BASE_DIR
+
+mkdir -p $GITHUB_LINK
+cd $GITHUB_LINK
+cd ..
+rmdir ./*
+echo "Current dir: $(pwd)"
+
+
+echo "Cloning ${GITHUB_LINK}"
+
+GITHUB_SSH=git@${GITHUB_LINK}.git
+GITHUB_SSH=${GITHUB_SSH/\//:}
+
+echo "Cloning by: $GITHUB_SSH"
+
+git clone $GITHUB_SSH
+
+echo "To open the project, run: code $BASE_DIR/$GITHUB_LINK"
